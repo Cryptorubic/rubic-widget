@@ -1,8 +1,8 @@
 export enum BLOCKCHAIN_NAME {
-    ETHEREUM = 'ETH',
-    BINANCE_SMART_CHAIN = 'BSC',
-    POLYGON = 'POLYGON',
-    TRON = 'TRX',
-    XDAI = 'XDAI',
-    HARMONY = 'HARMONY'
+    ETHEREUM = 'eth',
+    BINANCE_SMART_CHAIN = 'bsc',
+    POLYGON = 'polygon',
+    TRON = 'trx',
+    XDAI = 'xdai',
+    HARMONY = 'harmony'
 }

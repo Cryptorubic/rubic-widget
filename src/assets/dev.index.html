@@ -9,8 +9,23 @@
 
 <script>
     setTimeout(() => {
-        window.rubicWidget.init();
-    })
+        const configuration = {
+            from: 'ETH',
+            to: 'WWish',
+            fromChain: 'ETH',
+            toChain: 'ETH',
+            amount: 1,
+            iframe: 'flex',
+            hideSelectionFrom: false,
+            hideSelectionTo: true,
+            background: '#28372e',
+            theme: 'dark',
+            injectTokens: {
+                eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518']
+            }
+        }
+        window.rubicWidget.init(configuration);
+    }, 2000)
 </script>
 </body>
 </html>

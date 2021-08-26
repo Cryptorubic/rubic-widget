@@ -1,22 +1,65 @@
 import {Configuration} from "./models/configuration";
 import {IframeType} from "./models/iframe-type";
 import queryString from 'query-string';
-import breakpoints from './styles/_vars.scss';
 
 export class RubicWidget {
+    private static widthBreakpoint = 1180;
+
+    private static sizes = {
+        vertical: {
+            height: 500,
+            width: 375
+        },
+        horizontal: {
+            height: 180,
+            width: 1180
+        }
+    }
+
     private static rootId = 'rubic-widget-root';
 
     public init(configuration: Configuration) {
         const root = document.getElementById(RubicWidget.rootId);
-        const iframeType: IframeType = window.innerWidth < 1180 ? 'vertical' : 'horizontal';
+        if (!root) {
+            console.error(`You should place <div id="${RubicWidget.rootId}"></div> into <body></body>`);
+            return;
+        }
+        const positionInfo = root.getBoundingClientRect();
+        root.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center
+        `;
 
-        const query = queryString.stringify(configuration);
+        const { injectTokens, iframe, ...parameters } = configuration;
 
-        const iframe = `
-        <iframe src="https://dev2.rubic.exchange/?iframe=${iframeType}${query ? '&' + query : ''}">
+        let iframeType: IframeType;
+        if (iframe === 'horizontal' || iframe == 'vertical') {
+            iframeType = iframe;
+        } else {
+            iframeType = positionInfo.width < RubicWidget.widthBreakpoint ? 'vertical' : 'horizontal';
+        }
+
+        if (injectTokens) {
+            Object.entries(injectTokens).forEach(([key, value]) => {
+                (<any>parameters)[`${key}_tokens`] = JSON.stringify(value);
+            })
+        }
+
+
+
+        const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
+
+        const iframeNode = `
+        <iframe
+            frameborder="0"
+            height="${RubicWidget.sizes[iframeType].height}"
+            width="${RubicWidget.sizes[iframeType].width}"
+            style="border-radius: 19px"
+            src="https://dev2.rubic.exchange/?iframe=${iframeType}${query ? '&amp;' + query : ''}">
         </iframe>
         `;
 
-        root.insertAdjacentHTML('afterend', iframe);
+        root.insertAdjacentHTML('afterbegin', iframeNode);
     }
 }
