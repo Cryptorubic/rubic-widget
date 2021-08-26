@@ -7,7 +7,7 @@
 <body>
     <div id="rubic-widget-root"></div>
 
-<script>
+<script defer>
     setTimeout(() => {
         const configuration = {
             from: 'ETH',
@@ -24,7 +24,7 @@
                 eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518']
             }
         }
-        window.rubicWidget.init(configuration);
+        rubicWidget.init(configuration);
     }, 2000)
 </script>
 </body>
