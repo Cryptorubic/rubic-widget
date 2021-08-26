@@ -1,0 +1,11 @@
+$iframe-horizontal-height: 180px;
+$iframe-horizontal-width: 1180px;
+$iframe-vertical-height: 500px;
+$iframe-vertical-width: 375px;
+
+:export {
+  iframe-horizontal-height: $iframe-horizontal-height;
+  iframe-horizontal-width: $iframe-horizontal-width;
+  iframe-vertical-height: $iframe-vertical-height;
+  iframe-vertical-width: $iframe-vertical-width;
+}
