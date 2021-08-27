@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "build:dev2": "webpack --config webpack.dev.js"
   },
   "dependencies": {
     "query-string": "^7.0.1"

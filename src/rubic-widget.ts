@@ -28,7 +28,8 @@ export class RubicWidget {
         root.style.cssText = `
             display: flex;
             align-items: center;
-            justify-content: center
+            justify-content: center;
+            width: 100%;
         `;
 
         const { injectTokens, iframe, ...parameters } = configuration;
