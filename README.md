@@ -21,7 +21,8 @@
 3. Put this script tag to the bottom of `<body>`
 ```html
 <script defer type="text/javascript">
-    const configuration = {
+    // describe widget configuration and saving to a global variable for future use
+    var configuration = {
         from: 'ETH',
         to: 'RBC',
         fromChain: 'ETH',
@@ -33,6 +34,11 @@
         theme: 'dark',
         background: '#28372e'
     }
+
+    // prevent accidental changes to the object, for example, when re-creating a widget for another theme
+    Object.freeze(configuration);
+
+    // create widget
     rubicWidget.init(configuration);
 </script>
 ```
@@ -54,3 +60,28 @@ You can customize the configuration parameters the way you want. Below is a desc
 | `background`       | values of css `background` property, e.g.'#28372e', 'white', 'linear-gradient(45deg, black, #4aa956)'                                                                                                                                                                                                                                                                                                                    | `linear-gradient(45deg, black, #4aa956)` with dark theme, `linear-gradient(45deg, #4aa956 20%, white)` with light theme | Allows you to set the background in widget outside the trade form.                                                                                                                                                      |
 | `language`         | 'en', 'es', 'ko', 'ru', 'zh'                                                                                                                                                                                                                                                                                                                                                                                             | `en`                                                                                                                    | Allows you to set widget language.                                                                                                                                                                                      |
 | `injectTokens`     | Object whose array properties contain addresses or symbols of tokens that must be added to the list of tokens available for selection (initially, the list contains only a few basic tokens for each blockchain). Available property keys: `eth`, `bsc`, `polygon`, `harmony`  e.g.  ``` {     eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518', 'CRV'],     bsc: ['0x2859e4544c4bb03966803b044a93563bd2d0dd4d'] } ``` | `{}`                                                                                                                    | Allows you to add your tokens to the tokens selection list inside widget.                                                                                                                                               |
+
+
+## Dynamic change parameters
+You can change the theme of the widget when changing the theme on your site, or any other parameters dynamically.
+To do this, call the init method again with the updated configuration. The previous widget will be deleted and a new one will be created instead.
+
+### Change widget theme when site theme changing
+```javascript
+function onThemeChange(newTheme){
+    // copy base dark configuration
+    const newConfiguration = { ...configuration };
+
+    if(newTheme === 'light'){
+        // modify configuration for the light theme. You can change any properties
+        newConfiguration.theme = 'light';
+        newConfiguration.background = 'white';
+        
+        // remove old widget and recreate new with light configuration
+        rubicWidget.init(newConfiguration);
+    } else {
+        // remove old widget and recreate new with dark configuration
+        rubicWidget.init(newConfiguration);
+    }
+}
+```
