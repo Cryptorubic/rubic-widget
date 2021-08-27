@@ -49,8 +49,6 @@ export class RubicWidget {
             })
         }
 
-
-
         const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
 
         const iframeNode = `
@@ -59,7 +57,7 @@ export class RubicWidget {
             frameborder="0"
             height="${RubicWidget.sizes[iframeType].height}"
             width="${RubicWidget.sizes[iframeType].width}"
-            style="border-radius: 19px"
+            style="border-radius: 19px; box-shadow: 3px 3px 10px 4px rgba(0, 0, 0, 0.1);"
             src="https://${process.env.API_BASE_URL}/?iframe=${iframeType}${query ? '&amp;' + query : ''}">
         </iframe>
         `;
