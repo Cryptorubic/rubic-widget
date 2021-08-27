@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { merge } = require('webpack-merge');
+const Dotenv = require('dotenv-webpack');
 const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
@@ -13,6 +14,9 @@ module.exports = merge(common, {
             title: 'Rubic Widget',
             template: './src/assets/dev.index.html',
             scriptLoading: 'defer'
+        }),
+        new Dotenv({
+            path: './src/environment/dev.env'
         })
     ]
 });

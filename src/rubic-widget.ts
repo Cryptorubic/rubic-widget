@@ -56,7 +56,7 @@ export class RubicWidget {
             height="${RubicWidget.sizes[iframeType].height}"
             width="${RubicWidget.sizes[iframeType].width}"
             style="border-radius: 19px"
-            src="https://dev2.rubic.exchange/?iframe=${iframeType}${query ? '&amp;' + query : ''}">
+            src="https://${process.env.API_BASE_URL}/?iframe=${iframeType}${query ? '&amp;' + query : ''}">
         </iframe>
         `;
 
