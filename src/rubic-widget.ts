@@ -32,6 +32,8 @@ export class RubicWidget {
             width: 100%;
         `;
 
+        root.querySelector('iframe#rubic-widget-iframe')?.remove()
+
         const { injectTokens, iframe, ...parameters } = configuration;
 
         let iframeType: IframeType;
@@ -53,6 +55,7 @@ export class RubicWidget {
 
         const iframeNode = `
         <iframe
+            id="rubic-widget-iframe"
             frameborder="0"
             height="${RubicWidget.sizes[iframeType].height}"
             width="${RubicWidget.sizes[iframeType].width}"
