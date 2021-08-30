@@ -3,6 +3,10 @@ import {IframeType} from "./iframe-type";
 
 export type InjectTokensBlockchains = 'eth' | 'bsc' | 'polygon' | 'harmony';
 
+export type InjectTokensQuery = Partial<{
+    [key in InjectTokensBlockchains as `${key}_tokens`]: string;
+}>;
+
 export interface Configuration {
     language?: 'en' | 'ru';
     from?: string;
