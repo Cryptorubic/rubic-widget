@@ -103,10 +103,12 @@ export class RubicWidget {
             let { injectTokens, iframe, ...parameters } = configuration;
             const iframeType = this.getIframeType();
             this.iframeAppearance = iframeType;
+            const device = window.innerWidth < 600 ? 'mobile' : 'desktop';
             parameters = {
                 ...parameters,
-                ...this.getInjectedTokensObject()
-            }
+                ...this.getInjectedTokensObject(),
+                device
+            } as any;
 
             const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
 
