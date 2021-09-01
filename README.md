@@ -85,3 +85,36 @@ function onThemeChange(newTheme){
     }
 }
 ```
+
+## Use with SSR
+Remember that when using server-side rendering, the script with the widget setting must be executed on the client-side. When adding the widget initialization code, make sure that it will only be executed on the client.
+
+For example, if you use NuxtJs you should use the following code to initialize the widget:
+
+```javascript
+<script>
+    if (process.browser) {
+        window.onNuxtReady(() => {
+            // describe widget configuration and saving to a global variable for future use
+            var configuration = {
+                from: 'ETH',
+                to: 'RBC',
+                fromChain: 'ETH',
+                toChain: 'ETH',
+                amount: 1,
+                iframe: 'flex',
+                hideSelectionFrom: false,
+                hideSelectionTo: true,
+                theme: 'dark',
+                background: '#28372e'
+            }
+    
+            // prevent accidental changes to the object, for example, when re-creating a widget for another theme
+            Object.freeze(configuration);
+    
+            // create widget
+            rubicWidget.init(configuration);
+        })
+    }
+</script>
+```
