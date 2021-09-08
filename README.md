@@ -32,7 +32,11 @@
         hideSelectionFrom: false,
         hideSelectionTo: true,
         theme: 'dark',
-        background: '#28372e'
+        background: '#28372e',
+        injectTokens: {
+            eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518'],
+            bsc: ['0x8aed24bf6e0247be51c57d68ad32a176bf86f4d9']
+        }
     }
 
     // prevent accidental changes to the object, for example, when re-creating a widget for another theme
@@ -106,7 +110,11 @@ For example, if you use NuxtJs you should use the following code to initialize t
                 hideSelectionFrom: false,
                 hideSelectionTo: true,
                 theme: 'dark',
-                background: '#28372e'
+                background: '#28372e',
+                injectTokens: {
+                    eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518'],
+                    bsc: ['0x8aed24bf6e0247be51c57d68ad32a176bf86f4d9']
+                }
             }
     
             // prevent accidental changes to the object, for example, when re-creating a widget for another theme
