@@ -27,6 +27,8 @@ export class RubicWidget {
 
     private iframeAppearance: IframeType;
 
+    private isWidgetIntoViewport: boolean;
+
     private configuration: Configuration = {
         language: 'en',
         from: 'ETH',
@@ -96,6 +98,7 @@ export class RubicWidget {
 
         setTimeout(() => {
             if (this.firstInitialisation && configuration.iframe !== 'vertical' && configuration.iframe !== 'horizontal') {
+                this.addViewportChangeListener();
                 this.firstInitialisation = false;
                 new ResizeObserver(this.onResize.bind(this)).observe(root);
             }
@@ -200,5 +203,47 @@ export class RubicWidget {
             return;
         }
         document.head.insertAdjacentHTML("beforeend", style);
+    }
+
+    private addViewportChangeListener() {
+        addEventListener('DOMContentLoaded',this.onViewportChange, false);
+        addEventListener('load', this.onViewportChange, false);
+        addEventListener('scroll', this.onViewportChange, false);
+        addEventListener('resize', this.onViewportChange, false);
+    }
+
+    private onViewportChange = () => {
+        const root = this.tryGetRoot();
+        const iframe = root.querySelector('iframe');
+        if (!iframe || iframe?.style.display === 'none') {
+            setTimeout(this.onViewportChange, 2000);
+        }
+
+        const isWidgetIntoViewport = RubicWidget.isElementInViewport(iframe);
+        if (this.isWidgetIntoViewport === isWidgetIntoViewport) {
+            return;
+        }
+
+        this.isWidgetIntoViewport = isWidgetIntoViewport;
+        const msg = {
+            name: 'widget-into-viewport',
+            widgetIntoViewport: isWidgetIntoViewport
+        }
+        try {
+            iframe.contentWindow.postMessage(msg, `https://${process.env.API_BASE_URL}`);
+        } catch (e) {
+            console.debug(e);
+        }
+    }
+
+    private static isElementInViewport (element: HTMLElement) {
+        const box = element.getBoundingClientRect();
+
+        return (
+            box.bottom >= 0 &&
+            box.right >= 0 &&
+            box.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+            box.left <= (window.innerWidth || document.documentElement.clientWidth)
+        );
     }
 }
