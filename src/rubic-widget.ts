@@ -224,13 +224,18 @@ export class RubicWidget {
             return;
         }
 
+        const timeout = this.isWidgetIntoViewport === undefined ? 3000 : 0;
         this.isWidgetIntoViewport = isWidgetIntoViewport;
         const msg = {
             name: 'widget-into-viewport',
             widgetIntoViewport: isWidgetIntoViewport
         }
         try {
-            iframe.contentWindow.postMessage(msg, `https://${process.env.API_BASE_URL}`);
+            setTimeout(() => {
+                if (msg.widgetIntoViewport === this.isWidgetIntoViewport) {
+                    iframe.contentWindow.postMessage(msg, `https://${process.env.API_BASE_URL}`)
+                }
+            }, timeout);
         } catch (e) {
             console.debug(e);
         }
