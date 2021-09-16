@@ -60,6 +60,7 @@ export class RubicWidget {
         (<any>window).onFrameLoad = () => {
             this.iframe.style.display = 'block';
             this.placeholder.remove();
+            setTimeout(() => this.onViewportChange(true), 5000);
         }
 
         const fadeinAnimation = `
@@ -155,6 +156,8 @@ export class RubicWidget {
                     (this.iframeAppearance === 'horizontal' && rootWidth < RubicWidget.widthBreakpoint)
                 ) {
                     this.init();
+                } else {
+                    setTimeout(this.onViewportChange);
                 }
             }
         });
@@ -209,33 +212,27 @@ export class RubicWidget {
         addEventListener('DOMContentLoaded',this.onViewportChange, false);
         addEventListener('load', this.onViewportChange, false);
         addEventListener('scroll', this.onViewportChange, false);
-        addEventListener('resize', this.onViewportChange, false);
     }
 
-    private onViewportChange = () => {
+    private onViewportChange = (force?: boolean | unknown) => {
         const root = this.tryGetRoot();
         const iframe = root.querySelector('iframe');
         if (!iframe || iframe?.style.display === 'none') {
-            setTimeout(this.onViewportChange, 2000);
+         return;
         }
 
         const isWidgetIntoViewport = RubicWidget.isElementInViewport(iframe);
-        if (this.isWidgetIntoViewport === isWidgetIntoViewport) {
+        if (this.isWidgetIntoViewport === isWidgetIntoViewport && force !== true) {
             return;
         }
 
-        const timeout = this.isWidgetIntoViewport === undefined ? 3000 : 0;
         this.isWidgetIntoViewport = isWidgetIntoViewport;
         const msg = {
             name: 'widget-into-viewport',
             widgetIntoViewport: isWidgetIntoViewport
         }
         try {
-            setTimeout(() => {
-                if (msg.widgetIntoViewport === this.isWidgetIntoViewport) {
-                    iframe.contentWindow.postMessage(msg, `https://${process.env.API_BASE_URL}`)
-                }
-            }, timeout);
+            iframe.contentWindow.postMessage(msg, `https://${process.env.API_BASE_URL}`)
         } catch (e) {
             console.debug(e);
         }
@@ -245,10 +242,10 @@ export class RubicWidget {
         const box = element.getBoundingClientRect();
 
         return (
-            box.bottom >= 0 &&
-            box.right >= 0 &&
-            box.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-            box.left <= (window.innerWidth || document.documentElement.clientWidth)
+            box.bottom > 0 &&
+            box.right > 0 &&
+            box.top < (window.innerHeight || document.documentElement.clientHeight) &&
+            box.left < (window.innerWidth || document.documentElement.clientWidth)
         );
     }
 }
