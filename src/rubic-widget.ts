@@ -91,6 +91,7 @@ export class RubicWidget {
         if (!configuration) {
             configuration = this.configuration;
         } else {
+            this.checkConfiguration(configuration);
             this.configuration = configuration;
         }
         const root = this.tryGetRoot();
@@ -193,7 +194,7 @@ export class RubicWidget {
     private tryGetRoot(): HTMLElement {
         const root = this.root;
         if (!root) {
-            console.error(`You should place <div id="${RubicWidget.rootId}"></div> into <body></body>`);
+            console.error(`[RUBIC WIDGET] You should place <div id="${RubicWidget.rootId}"></div> into <body></body>`);
             throw new Error(`You should place <div id="${RubicWidget.rootId}"></div> into <body></body>`);
         }
 
@@ -238,7 +239,7 @@ export class RubicWidget {
         }
     }
 
-    private static isElementInViewport (element: HTMLElement) {
+    private static isElementInViewport(element: HTMLElement) {
         const box = element.getBoundingClientRect();
 
         return (
@@ -247,5 +248,26 @@ export class RubicWidget {
             box.top < (window.innerHeight || document.documentElement.clientHeight) &&
             box.left < (window.innerWidth || document.documentElement.clientWidth)
         );
+    }
+
+    private checkConfiguration(configuration: Configuration) {
+        const checkTokenIncluded = (token: string, blockchain: InjectTokensBlockchains) => {
+            if(!configuration.injectTokens?.[blockchain]?.includes(token)) {
+                console.error(`[RUBIC WIDGET]  ERROR: if you are using a custom token (${token}) you must include it in the injected tokens in the configuration. Try adding the following code to the config:
+                    \n
+                    var configuration = {
+                        ... ,
+                        injectTokens: {
+                            ${blockchain}: ['${token}']
+                        }
+                    }
+                    \n
+                    Please visit https://github.com/Cryptorubic/rubic-widget for more details 
+                `)
+            }
+        }
+
+        configuration.from.startsWith('0x') && checkTokenIncluded(configuration.from, configuration.fromChain.toLowerCase() as InjectTokensBlockchains);
+        configuration.to.startsWith('0x') && checkTokenIncluded(configuration.to, configuration.toChain.toLowerCase() as InjectTokensBlockchains);
     }
 }
