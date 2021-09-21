@@ -46,6 +46,9 @@
     rubicWidget.init(configuration);
 </script>
 ```
+
+> ⚠️ **You should enter tokens addresses in ethereum checksum format.** To avoid errors, copy the token address from a blockchain explorer, for example, [etherscan](https://etherscan.io/).
+
 You can customize the configuration parameters the way you want. Below is a description of the options available.
 
 ## Available configuration parameters

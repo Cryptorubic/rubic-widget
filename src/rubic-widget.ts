@@ -252,7 +252,7 @@ export class RubicWidget {
 
     private checkConfiguration(configuration: Configuration) {
         const checkTokenIncluded = (token: string, blockchain: InjectTokensBlockchains) => {
-            if(!configuration.injectTokens?.[blockchain]?.includes(token)) {
+            if(!configuration.injectTokens?.[blockchain]?.some(item => item.toLowerCase() === token.toLowerCase())) {
                 console.error(`[RUBIC WIDGET]  ERROR: if you are using a custom token (${token}) you must include it in the injected tokens in the configuration. Try adding the following code to the config:
                     \n
                     var configuration = {
