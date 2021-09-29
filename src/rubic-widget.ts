@@ -1,6 +1,7 @@
 import {Configuration, InjectTokensBlockchains, InjectTokensQuery} from './models/configuration';
 import {IframeType} from './models/iframe-type';
 import queryString from 'query-string';
+import stringify from 'stringify-object';
 import {BLOCKCHAIN_NAME} from "./models/BLOCKCHAIN_NAME";
 
 export class RubicWidget {
@@ -253,17 +254,22 @@ export class RubicWidget {
     private checkConfiguration(configuration: Configuration) {
         const checkTokenIncluded = (token: string, blockchain: InjectTokensBlockchains) => {
             if(!configuration.injectTokens?.[blockchain]?.some(item => item.toLowerCase() === token.toLowerCase())) {
-                console.error(`[RUBIC WIDGET]  ERROR: if you are using a custom token (${token}) you must include it in the injected tokens in the configuration. Try adding the following code to the config:
-                    \n
-                    var configuration = {
-                        ... ,
-                        injectTokens: {
-                            ${blockchain}: ['${token}']
-                        }
-                    }
-                    \n
-                    Please visit https://github.com/Cryptorubic/rubic-widget for more details 
-                `)
+                const configurationClone = JSON.parse(JSON.stringify(configuration));
+                configurationClone.injectTokens = {
+                    [blockchain]: [token]
+                };
+                const prettyConfigurationClone = stringify(configurationClone, {
+                    indent: '  ',
+                    singleQuotes: false
+                });
+
+                console.error(
+                    `[RUBIC WIDGET]  ERROR: if you are using a custom token (${token}) you must include it in the injected tokens in the configuration. Try adding the following code to the config:` +
+                    '\n\n' +
+                    `var configuration = ${prettyConfigurationClone}` +
+                    '\n\n' +
+                    'Please visit https://github.com/Cryptorubic/rubic-widget for more details'
+                )
             }
         }
 

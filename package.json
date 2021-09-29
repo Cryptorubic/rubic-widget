@@ -7,9 +7,11 @@
     "build:dev2": "webpack --config webpack.dev.js"
   },
   "dependencies": {
-    "query-string": "^7.0.1"
+    "query-string": "^7.0.1",
+    "stringify-object": "^4.0.0"
   },
   "devDependencies": {
+    "@types/stringify-object": "^4.0.0",
     "dotenv-webpack": "^7.0.3",
     "html-webpack-plugin": "^5.3.2",
     "ts-loader": "^9.2.5",
