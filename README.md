@@ -129,3 +129,6 @@ For example, if you use NuxtJs you should use the following code to initialize t
     }
 </script>
 ```
+
+## Stop resize listeners
+If you want to remove resize observer and scroll listeners with `iframe: flex` configuration, you can call `rubicWidget.disable()`. After that you will be abel to recreate widget via `rubicWidget.init(configuration)`
