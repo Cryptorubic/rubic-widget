@@ -30,6 +30,8 @@ export class RubicWidget {
 
     private isWidgetIntoViewport: boolean;
 
+    private resizeObserver: ResizeObserver;
+
     private configuration: Configuration = {
         language: 'en',
         from: 'ETH',
@@ -88,7 +90,8 @@ export class RubicWidget {
         this.addStyle([fadeinAnimation, rootStyles]);
     }
 
-    public init(configuration?: Configuration): void {
+    public init(configuration?: Configuration, initialize = true): void {
+        this.disable();
         if (!configuration) {
             configuration = this.configuration;
         } else {
@@ -100,10 +103,10 @@ export class RubicWidget {
         this.placeholder?.remove()
 
         setTimeout(() => {
-            if (this.firstInitialisation && configuration.iframe !== 'vertical' && configuration.iframe !== 'horizontal') {
+            if (initialize && this.firstInitialisation && configuration.iframe !== 'vertical' && configuration.iframe !== 'horizontal') {
                 this.addViewportChangeListener();
-                this.firstInitialisation = false;
-                new ResizeObserver(this.onResize.bind(this)).observe(root);
+                this.resizeObserver = new ResizeObserver(this.onResize.bind(this));
+                this.resizeObserver.observe(root);
             }
 
             let { injectTokens, iframe, ...parameters } = configuration;
@@ -149,6 +152,13 @@ export class RubicWidget {
         })
     }
 
+    public disable() {
+        removeEventListener('DOMContentLoaded',this.onViewportChange, false);
+        removeEventListener('load', this.onViewportChange, false);
+        removeEventListener('scroll', this.onViewportChange, false);
+        this.resizeObserver?.disconnect();
+    }
+
     private onResize(): void {
         setTimeout(() => {
             if (this.configuration.iframe !== 'vertical' && this.configuration.iframe !== 'horizontal') {
@@ -157,7 +167,7 @@ export class RubicWidget {
                     (this.iframeAppearance === 'vertical' && rootWidth >= RubicWidget.widthBreakpoint) ||
                     (this.iframeAppearance === 'horizontal' && rootWidth < RubicWidget.widthBreakpoint)
                 ) {
-                    this.init();
+                    this.init(null, false);
                 } else {
                     setTimeout(this.onViewportChange);
                 }
