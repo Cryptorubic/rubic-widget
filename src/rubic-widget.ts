@@ -24,8 +24,6 @@ export class RubicWidget {
 
     private static placeholderId = 'rubic-widget-placeholder';
 
-    private firstInitialisation = true;
-
     private iframeAppearance: IframeType;
 
     private isWidgetIntoViewport: boolean;
@@ -91,7 +89,6 @@ export class RubicWidget {
     }
 
     public init(configuration?: Configuration, initialize = true): void {
-        this.disable();
         if (!configuration) {
             configuration = this.configuration;
         } else {
@@ -103,7 +100,8 @@ export class RubicWidget {
         this.placeholder?.remove()
 
         setTimeout(() => {
-            if (initialize && this.firstInitialisation && configuration.iframe !== 'vertical' && configuration.iframe !== 'horizontal') {
+            if (initialize && configuration.iframe !== 'vertical' && configuration.iframe !== 'horizontal') {
+                this.disable();
                 this.addViewportChangeListener();
                 this.resizeObserver = new ResizeObserver(this.onResize.bind(this));
                 this.resizeObserver.observe(root);
