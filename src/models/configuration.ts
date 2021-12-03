@@ -17,6 +17,8 @@ export interface Configuration {
     iframe?: IframeType;
     hideSelectionFrom?: boolean;
     hideSelectionTo?: boolean;
+    slippageIt: number,
+    slippageCcr: number,
     background?: string;
     theme?: 'dark' | 'light';
     injectTokens?: Partial<Record<InjectTokensBlockchains, string[]>>;

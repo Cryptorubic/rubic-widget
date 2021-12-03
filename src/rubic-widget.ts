@@ -40,6 +40,8 @@ export class RubicWidget {
         iframe: 'flex' as IframeType,
         hideSelectionFrom: false,
         hideSelectionTo: true,
+        slippageIt: 2,
+        slippageCcr: 5,
         background: 'linear-gradient(45deg, black, #4aa956)',
         theme: 'dark',
         injectTokens: {}
