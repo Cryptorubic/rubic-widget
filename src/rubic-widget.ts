@@ -42,11 +42,7 @@ export class RubicWidget {
         hideSelectionTo: true,
         background: 'linear-gradient(45deg, black, #4aa956)',
         theme: 'dark',
-        injectTokens: {},
-        slippagePercent: {
-            instantTrades: 2,
-            crossChain: 5
-        }
+        injectTokens: {}
     }
 
     private get root(): HTMLElement | null {
@@ -117,12 +113,13 @@ export class RubicWidget {
             const device = window.innerWidth < 600 ? 'mobile' : 'desktop';
             parameters = {
                 ...parameters,
-                slippageIt: slippagePercent.instantTrades,
-                slippageCcr: slippagePercent.crossChain,
+                ...(slippagePercent?.instantTrades && { slippageIt:  slippagePercent.instantTrades }),
+                ...(slippagePercent?.crossChain && { slippageCcr:  slippagePercent.crossChain }),
                 ...this.getInjectedTokensObject(),
                 device
             } as any;
 
+            console.log(parameters, slippagePercent?.instantTrades);
 
             const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
 
