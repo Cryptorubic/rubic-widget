@@ -18,12 +18,14 @@
             iframe: 'flex',
             hideSelectionFrom: false,
             hideSelectionTo: false,
-            slippageIt: 2,
-            slippageCcr: 5,
             background: '#28372e',
             theme: 'dark',
             injectTokens: {
                 eth: ['0xd123575d94a7ad9bff3ad037ae9d4d52f41a7518']
+            },
+            slippagePercent: {
+                instantTrades: 2,
+                crossChain: 5
             }
         }
         rubicWidget.init(configuration);

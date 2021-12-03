@@ -40,11 +40,13 @@ export class RubicWidget {
         iframe: 'flex' as IframeType,
         hideSelectionFrom: false,
         hideSelectionTo: true,
-        slippageIt: 2,
-        slippageCcr: 5,
         background: 'linear-gradient(45deg, black, #4aa956)',
         theme: 'dark',
-        injectTokens: {}
+        injectTokens: {},
+        slippagePercent: {
+            instantTrades: 2,
+            crossChain: 5
+        }
     }
 
     private get root(): HTMLElement | null {
@@ -109,15 +111,18 @@ export class RubicWidget {
                 this.resizeObserver.observe(root);
             }
 
-            let { injectTokens, iframe, ...parameters } = configuration;
+            let { injectTokens, iframe, slippagePercent, ...parameters } = configuration;
             const iframeType = this.getIframeType();
             this.iframeAppearance = iframeType;
             const device = window.innerWidth < 600 ? 'mobile' : 'desktop';
             parameters = {
                 ...parameters,
+                slippageIt: slippagePercent.instantTrades,
+                slippageCcr: slippagePercent.crossChain,
                 ...this.getInjectedTokensObject(),
                 device
             } as any;
+
 
             const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
 
