@@ -31,6 +31,8 @@
         iframe: 'flex',
         hideSelectionFrom: false,
         hideSelectionTo: true,
+        slippageIt: 2,
+        slippageCcr: 5,
         theme: 'dark',
         background: '#28372e',
         injectTokens: {
@@ -112,6 +114,8 @@ For example, if you use NuxtJs you should use the following code to initialize t
                 iframe: 'flex',
                 hideSelectionFrom: false,
                 hideSelectionTo: true,
+                slippageIt: 2,
+                slippageCcr: 5,
                 theme: 'dark',
                 background: '#28372e',
                 injectTokens: {
