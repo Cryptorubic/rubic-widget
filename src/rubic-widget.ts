@@ -119,8 +119,6 @@ export class RubicWidget {
                 device
             } as any;
 
-            console.log(parameters, slippagePercent?.instantTrades);
-
             const query = queryString.stringify(parameters).replaceAll('&', '&amp;');
 
             const iframeNode = `
