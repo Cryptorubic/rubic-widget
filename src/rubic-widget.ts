@@ -107,12 +107,14 @@ export class RubicWidget {
                 this.resizeObserver.observe(root);
             }
 
-            let { injectTokens, iframe, ...parameters } = configuration;
+            let { injectTokens, iframe, slippagePercent, ...parameters } = configuration;
             const iframeType = this.getIframeType();
             this.iframeAppearance = iframeType;
             const device = window.innerWidth < 600 ? 'mobile' : 'desktop';
             parameters = {
                 ...parameters,
+                ...(slippagePercent?.instantTrades && { slippageIt:  slippagePercent.instantTrades }),
+                ...(slippagePercent?.crossChain && { slippageCcr:  slippagePercent.crossChain }),
                 ...this.getInjectedTokensObject(),
                 device
             } as any;
