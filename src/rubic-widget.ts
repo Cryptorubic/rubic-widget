@@ -42,7 +42,8 @@ export class RubicWidget {
         hideSelectionTo: true,
         background: 'linear-gradient(45deg, black, #4aa956)',
         theme: 'dark',
-        injectTokens: {}
+        injectTokens: {},
+        slippagePercent: {}
     }
 
     private get root(): HTMLElement | null {
