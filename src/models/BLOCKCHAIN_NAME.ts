@@ -4,5 +4,7 @@ export enum BLOCKCHAIN_NAME {
     POLYGON = 'polygon',
     TRON = 'trx',
     XDAI = 'xdai',
-    HARMONY = 'harmony'
+    HARMONY = 'harmony',
+    FANTOM = 'fantom',
+    MOONRIVER = 'moonriver'
 }
