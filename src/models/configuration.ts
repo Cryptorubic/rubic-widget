@@ -24,4 +24,7 @@ export interface Configuration {
     background?: string;
     theme?: 'dark' | 'light';
     injectTokens?: Partial<Record<InjectTokensBlockchains, string[]>>;
+    promoCode?: string;
+    fee?: 0.1 | 0.2;
+    feeTarget?: string;
 }
