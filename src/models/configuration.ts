@@ -1,3 +1,4 @@
+import { AvailableFeeValues } from 'src/constants/available-fee-values';
 import {BLOCKCHAIN_NAME} from "./BLOCKCHAIN_NAME";
 import {IframeType} from "./iframe-type";
 
@@ -25,6 +26,6 @@ export interface Configuration {
     theme?: 'dark' | 'light';
     injectTokens?: Partial<Record<InjectTokensBlockchains, string[]>>;
     promoCode?: string;
-    fee?: 0.1 | 0.2;
+    fee?: AvailableFeeValues;
     feeTarget?: string;
 }

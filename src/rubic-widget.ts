@@ -1,13 +1,12 @@
+import { availableFeeValues } from './constants/available-fee-values';
 import {Configuration, InjectTokensBlockchains, InjectTokensQuery} from './models/configuration';
 import {IframeType} from './models/iframe-type';
 import queryString from 'query-string';
 import stringify from 'stringify-object';
-import {BLOCKCHAIN_NAME} from "./models/BLOCKCHAIN_NAME";
+import { BLOCKCHAIN_NAME } from './models/BLOCKCHAIN_NAME';
 
 export class RubicWidget {
     private static widthBreakpoint = 1180;
-
-    private static availableFeeValues = [0.1, 0.2];
 
     private static sizes = {
         vertical: {
@@ -312,21 +311,21 @@ export class RubicWidget {
             this.feeIsNotSet(configuration);
         }
 
-        if (configuration.fee && !RubicWidget.availableFeeValues.includes(Number(configuration.fee))) {
+        if (configuration.fee && !(availableFeeValues as ReadonlyArray<number>).includes(Number(configuration.fee))) {
             this.wrongFeeValue(configuration);
         }
     }
 
     private feeAndFeeTargetAreNotSet(configuration: Configuration): never {
         const configurationClone = JSON.parse(JSON.stringify(configuration));
-        configurationClone.fee = `<${RubicWidget.availableFeeValues.join(' or ')}>`;
+        configurationClone.fee = this.getAvailableFeeValuesString();
         configurationClone.feeTarget = `<the address to which fee will be sent>`;
         this.throw('When using promocode you must specify fee and feeTarget', configurationClone);
     }
 
     private feeIsNotSet(configuration: Configuration): never {
         const configurationClone = JSON.parse(JSON.stringify(configuration));
-        configurationClone.fee = `<${RubicWidget.availableFeeValues.join(' or ')}>`;
+        configurationClone.fee = this.getAvailableFeeValuesString();
         this.throw('Fee is not specified', configurationClone);
     }
 
@@ -338,7 +337,7 @@ export class RubicWidget {
 
     private wrongFeeValue(configuration: Configuration): never {
         const configurationClone = JSON.parse(JSON.stringify(configuration));
-        configurationClone.fee = `<${RubicWidget.availableFeeValues.join(' or ')}>`;
+        configurationClone.fee = this.getAvailableFeeValuesString();
         this.throw('Wrong fee value set', configurationClone);
     }
 
@@ -355,5 +354,12 @@ export class RubicWidget {
             '\n\n' +
             'Please visit https://github.com/Cryptorubic/rubic-widget for more details.'
         );
+    }
+
+    private getAvailableFeeValuesString(): string | number {
+        if (availableFeeValues.length > 1) {
+            return `<${availableFeeValues.join(' or ')}>`;
+        }
+        return availableFeeValues[0];
     }
 }
