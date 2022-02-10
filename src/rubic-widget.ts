@@ -1,8 +1,9 @@
+import { availableFeeValues } from './constants/available-fee-values';
 import {Configuration, InjectTokensBlockchains, InjectTokensQuery} from './models/configuration';
 import {IframeType} from './models/iframe-type';
 import queryString from 'query-string';
 import stringify from 'stringify-object';
-import {BLOCKCHAIN_NAME} from "./models/BLOCKCHAIN_NAME";
+import { BLOCKCHAIN_NAME } from './models/BLOCKCHAIN_NAME';
 
 export class RubicWidget {
     private static widthBreakpoint = 1180;
@@ -263,6 +264,7 @@ export class RubicWidget {
     }
 
     private checkConfiguration(configuration: Configuration) {
+        this.checkFee(configuration);
         const checkTokenIncluded = (token: string, blockchain: InjectTokensBlockchains) => {
             if(!configuration.injectTokens?.[blockchain]?.some(item => item.toLowerCase() === token.toLowerCase())) {
                 const configurationClone = JSON.parse(JSON.stringify(configuration));
@@ -279,12 +281,85 @@ export class RubicWidget {
                     '\n\n' +
                     `var configuration = ${prettyConfigurationClone}` +
                     '\n\n' +
-                    'Please visit https://github.com/Cryptorubic/rubic-widget for more details'
+                    'Please visit https://github.com/Cryptorubic/rubic-widget for more details.'
                 )
             }
         }
 
         configuration.from.startsWith('0x') && checkTokenIncluded(configuration.from, configuration.fromChain.toLowerCase() as InjectTokensBlockchains);
         configuration.to.startsWith('0x') && checkTokenIncluded(configuration.to, configuration.toChain.toLowerCase() as InjectTokensBlockchains);
+    }
+
+    private checkFee(configuration: Configuration): void {
+        if (configuration.promoCode && !(configuration.fee || configuration.feeTarget)) {
+            this.feeAndFeeTargetAreNotSet(configuration);
+        }
+
+        if (configuration.promoCode && !configuration.fee) {
+            this.feeIsNotSet(configuration);
+        }
+
+        if (configuration.promoCode && !configuration.feeTarget) {
+            this.feeTargetIsNotSet(configuration);
+        }
+
+        if (configuration.fee && !configuration.feeTarget) {
+            this.feeTargetIsNotSet(configuration);
+        }
+
+        if (configuration.feeTarget && !configuration.fee) {
+            this.feeIsNotSet(configuration);
+        }
+
+        if (configuration.fee && !(availableFeeValues as ReadonlyArray<number>).includes(Number(configuration.fee))) {
+            this.wrongFeeValue(configuration);
+        }
+    }
+
+    private feeAndFeeTargetAreNotSet(configuration: Configuration): never {
+        const configurationClone = JSON.parse(JSON.stringify(configuration));
+        configurationClone.fee = this.getAvailableFeeValuesString();
+        configurationClone.feeTarget = `<the address to which fee will be sent>`;
+        this.throw('When using promocode you must specify fee and feeTarget', configurationClone);
+    }
+
+    private feeIsNotSet(configuration: Configuration): never {
+        const configurationClone = JSON.parse(JSON.stringify(configuration));
+        configurationClone.fee = this.getAvailableFeeValuesString();
+        this.throw('Fee is not specified', configurationClone);
+    }
+
+    private feeTargetIsNotSet(configuration: Configuration): never {
+        const configurationClone = JSON.parse(JSON.stringify(configuration));
+        configurationClone.feeTarget = `<the address to which fee will be sent>`;
+        this.throw('Fee target is not specified', configurationClone);
+    }
+
+    private wrongFeeValue(configuration: Configuration): never {
+        const configurationClone = JSON.parse(JSON.stringify(configuration));
+        configurationClone.fee = this.getAvailableFeeValuesString();
+        this.throw('Wrong fee value set', configurationClone);
+    }
+
+    private throw(message: string, correctConfiguration: object): never {
+        const prettyConfigurationClone = stringify(correctConfiguration, {
+            indent: '  ',
+            singleQuotes: false
+        });
+
+        throw new Error(
+            `[RUBIC WIDGET] ERROR: ${message}. Try adding the following code to the config:` +
+            '\n\n' +
+            `var configuration = ${prettyConfigurationClone}` +
+            '\n\n' +
+            'Please visit https://github.com/Cryptorubic/rubic-widget for more details.'
+        );
+    }
+
+    private getAvailableFeeValuesString(): string | number {
+        if (availableFeeValues.length > 1) {
+            return `<${availableFeeValues.join(' or ')}>`;
+        }
+        return availableFeeValues[0];
     }
 }
