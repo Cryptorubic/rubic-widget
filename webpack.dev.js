@@ -21,7 +21,7 @@ module.exports = merge(common, {
         })
     ],
     output: {
-        filename: 'bundle.dev2.min.js',
+        filename: 'bundle.dev.min.js',
         path: path.resolve(__dirname, 'dist'),
         clean: true
     }
