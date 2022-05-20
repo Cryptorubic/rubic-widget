@@ -141,6 +141,7 @@ export class RubicWidget {
             </div>
             <iframe
                 id="rubic-widget-iframe"
+                title="Rubic Widget"
                 height="${RubicWidget.sizes[iframeType].height}"
                 width="${RubicWidget.sizes[iframeType].width}"
                 style="border: none; border-radius: 19px; box-shadow: 3px 3px 10px 4px rgba(0, 0, 0, 0.1); display: none;"
