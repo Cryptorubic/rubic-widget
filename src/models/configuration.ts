@@ -1,31 +1,24 @@
-import { AvailableFeeValues } from 'src/constants/available-fee-values';
-import {BLOCKCHAIN_NAME} from "./BLOCKCHAIN_NAME";
-import {IframeType} from "./iframe-type";
-
-export type InjectTokensBlockchains = 'eth' | 'bsc' | 'polygon' | 'harmony' | 'avalanche';
-
-export type InjectTokensQuery = Partial<{
-    [key in InjectTokensBlockchains as `${key}_tokens`]: string;
-}>;
-
 export interface Configuration {
-    language?: 'en' | 'ru';
+    // Trade Params
     from?: string;
     to?: string;
-    fromChain?: BLOCKCHAIN_NAME;
-    toChain?: BLOCKCHAIN_NAME;
+    fromChain?: string;
+    toChain?: string;
     amount?: number;
-    iframe?: IframeType;
+    // UIU Params
+    iframe?: boolean;
     hideSelectionFrom?: boolean;
     hideSelectionTo?: boolean;
+    language?: 'en' | 'es' | 'ko' | 'ru' | 'zh' | 'tr' | 'fr';
+    theme?: 'dark' | 'light';
+    // Swap Params
+    injectTokens?: Record<string, string[]>;
     slippagePercent?: {
         instantTrades?: number;
         crossChain?: number;
     }
-    background?: string;
-    theme?: 'dark' | 'light';
-    injectTokens?: Partial<Record<InjectTokensBlockchains, string[]>>;
-    promoCode?: string;
-    fee?: AvailableFeeValues;
-    feeTarget?: string;
+    enabledProviders?: string[];
+    enabledBlockchains?: string[];
+    crossChainIntegratorAddress?: string;
+    onChainIntegratorAddress?: string;
 }
