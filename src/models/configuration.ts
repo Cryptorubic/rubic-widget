@@ -17,7 +17,10 @@ export interface Configuration {
         instantTrades?: number;
         crossChain?: number;
     }
-    enabledProviders?: string[];
+    whitelistOnChain?: string[],
+    whitelistCrossChain?: string[],
+    blacklistOnChain?: string[],
+    blacklistCrossChain?: string[],
     enabledBlockchains?: string[];
     crossChainIntegratorAddress?: string;
     onChainIntegratorAddress?: string;
