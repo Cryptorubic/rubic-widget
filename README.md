@@ -10,7 +10,7 @@
 
 1. Put this script tag to the `<head>` of your page 
 ```html
-<script type="text/javascript" src="https://widgets.rubic.exchange/iframe/bundle.min.js"></script>
+<script type="text/javascript" src="https://widgets.rubic.exchange/iframe/bundle.new-app.min.js"></script>
 ```
 
 2. Put this `div` tag to the place, where the Rubic Widget will be
