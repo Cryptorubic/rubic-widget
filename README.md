@@ -1,9 +1,7 @@
-![alt text](https://github.com/Cryptorubic/rubic-frontend/blob/master/src/assets/images/rubic-logo.svg "Rubic — Multichain DeFi platform")
-
 # Rubic Widget
 
 
-![alt text](https://github.com/Cryptorubic/rubic-widget/blob/master/src/assets/iframe.png "")
+<img src="https://github.com/Cryptorubic/rubic-widget/blob/update-widget/src/assets/iframe.png" width="390" height="681" alt="Iframe screen">
 
 
 ## Get started
