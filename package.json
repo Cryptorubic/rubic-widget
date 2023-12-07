@@ -5,8 +5,7 @@
     "start": "webpack serve --open --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "build:dev": "webpack --config webpack.dev.js",
-    "build:local": "webpack --config webpack.local.js",
-    "build:newapp": "webpack --config webpack.new-app.js"
+    "build:local": "webpack --config webpack.local.js"
   },
   "dependencies": {
     "query-string": "^7.0.1",
